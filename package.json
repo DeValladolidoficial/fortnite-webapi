@@ -1,0 +1,31 @@
+{
+  "name": "fortnite-webapi",
+  "version": "1.0.0",
+  "description": "Lightweight, Self Hosted Fortnite JSON Web API based on fortnite-api npm package.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tresmos/fortnite-webapi.git"
+  },
+  "author": "Tresmos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tresmos/fortnite-webapi/issues"
+  },
+  "homepage": "https://github.com/Tresmos/fortnite-webapi",
+  "dependencies": {
+    "express": "^4.16.3",
+    "fortnite-api": "^2.12.2",
+    "morgan": "^1.9.0"
+  },
+  "endpoints": [
+    "/stats/:platform(pc,xb1,ps4)/:username",
+    "/news",
+    "/status",
+    "/pveinfo",
+    "/store"
+  ]
+}
