@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const app = express()
 const config = require('./config.json')
 const pkg = require('./package.json')
+const request = require('request')
 
 app.use(morgan('combined'))
 
@@ -45,30 +46,36 @@ app.get('/stats/:platform/:username', function (req, res) {
 })
 
 app.get('/news', function (req, res) {
-  fortniteAPI.login().then(() => {
-    fortniteAPI
-      .getFortniteNews('en')
-      .then(news => {
-        res.setHeader('Content-Type', 'application/json')
-        res.status(200).send(JSON.stringify({br: [
+  var options = {
+    url: 'https://fortnitecontent-website-prod07.ol.epicgames.com/content/api/pages/fortnite-game',
+    headers: {
+      'Accept-Language': 'en'
+    }
+  }
+  request(options, (err, response, data) => {
+    if (err) {
+      console.log(err)
+    } else {
+      var parsed = JSON.parse(data)
+      res.setHeader('Content-Type', 'application/json')
+      res.status(200).send(JSON.stringify({
+        br: [
           {
-            image: news.br[0].image,
-            title: news.br[0].title,
-            body: news.br[0].body
+            image: parsed.battleroyalenews.news.messages[0].image,
+            title: parsed.battleroyalenews.news.messages[0].title,
+            body: parsed.battleroyalenews.news.messages[0].body
           }, {
-            image: news.br[1].image,
-            title: news.br[1].title,
-            body: news.br[1].body
+            image: parsed.battleroyalenews.news.messages[1].image,
+            title: parsed.battleroyalenews.news.messages[1].title,
+            body: parsed.battleroyalenews.news.messages[1].body
           }, {
-            image: news.br[2].image,
-            title: news.br[2].title,
-            body: news.br[2].body
-          }]}, null, 3))
-      })
-      .catch(err => {
-        res.setHeader('Content-Type', 'application/json')
-        res.status(400).send(JSON.stringify({'err': err}, null, 3))
-      })
+            image: parsed.battleroyalenews.news.messages[2].image,
+            title: parsed.battleroyalenews.news.messages[2].title,
+            body: parsed.battleroyalenews.news.messages[2].body
+          }]
+      }, null, 3))
+      StatsCounter('news')
+    }
   })
 })
 
