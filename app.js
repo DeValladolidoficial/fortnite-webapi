@@ -74,7 +74,6 @@ app.get('/news', function (req, res) {
             body: parsed.battleroyalenews.news.messages[2].body
           }]
       }, null, 3))
-      StatsCounter('news')
     }
   })
 })
