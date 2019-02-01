@@ -8,6 +8,15 @@ const request = require('request')
 
 app.use(morgan('combined'))
 
+// Configurar cabeceras y cors
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
+
 let fortniteAPI = new Fortnite(
   [
     config.email,
@@ -63,17 +72,32 @@ app.get('/news', function (req, res) {
           {
             image: parsed.battleroyalenews.news.messages[0].image,
             title: parsed.battleroyalenews.news.messages[0].title,
+            adspace: parsed.battleroyalenews.news.messages[0].adspace,
             body: parsed.battleroyalenews.news.messages[0].body
           }, {
             image: parsed.battleroyalenews.news.messages[1].image,
             title: parsed.battleroyalenews.news.messages[1].title,
+            adspace: parsed.battleroyalenews.news.messages[1].adspace,
             body: parsed.battleroyalenews.news.messages[1].body
           }, {
             image: parsed.battleroyalenews.news.messages[2].image,
             title: parsed.battleroyalenews.news.messages[2].title,
+            adspace: parsed.battleroyalenews.news.messages[2].adspace,
             body: parsed.battleroyalenews.news.messages[2].body
+          }],
+         stw: [
+        {
+            image: parsed.savetheworldnews.news.messages[0].image,
+            title: parsed.savetheworldnews.news.messages[0].title,
+            adspace: parsed.savetheworldnews.news.messages[0].adspace,
+            body: parsed.savetheworldnews.news.messages[0].body
+          }, {
+            image: parsed.savetheworldnews.news.messages[1].image,
+            title: parsed.savetheworldnews.news.messages[1].title,
+            adspace: parsed.savetheworldnews.news.messages[1].adspace,
+            body: parsed.savetheworldnews.news.messages[1].body
           }]
-      }, null, 3))
+      }, null, 5))
     }
   })
 })
